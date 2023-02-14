@@ -1,4 +1,10 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+const uri = "mongodb+srv://purkz:SpongebobIsGay621@cluster0.hsz14uv.mongodb.net/database?retryWrites=true&w=majority"
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+    console.log("connencted");
+}).catch(e => { console.log(e); })
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
