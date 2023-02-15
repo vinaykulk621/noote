@@ -16,18 +16,25 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).
         console.log("connencted To mongoDB");
     }).
     catch(e => { console.log(e); })
+let structure;
+app.use((req, res, next) => {
+    structure = req.url.split('?');
+    console.log("url-structure", parts, structure);
+    next();
+});
 
-app.get('/', (req, res) => {
+console.log("undefined aa raha hai kya?", structure);
+app.get('/*', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', (socket) => {
-    console.log("New Client Connected");
+    console.log("New Client Connected", socket.request.url);
     Msg.find()
         .then((messages) => {
             messages.forEach(msg => {
                 socket.emit('chat message', msg.msg);
-                console.log(msg.msg);
+                // console.log(msg.msg);
             })
         })
         .catch((error) => {
