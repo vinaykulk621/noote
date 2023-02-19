@@ -19,7 +19,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).
 let structure;
 app.use((req, res, next) => {
     structure = req.url.split('?');
-    console.log("url-structure", parts, structure);
+    console.log("url-structure", structure);
     next();
 });
 
