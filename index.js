@@ -11,9 +11,6 @@ const io = new Server(server);
 
 mongoose.set("strictQuery", false);
 
-const uri =
-  "mongodb+srv://purkz:SpongebobIsGay621@cluster0.hsz14uv.mongodb.net/database?retryWrites=true&w=majority";
-
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -22,6 +19,7 @@ mongoose
   .catch((e) => {
     console.log(e);
   });
+
 let structure;
 app.use((req, res, next) => {
   structure = req.url.split("?");
@@ -29,7 +27,6 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log("undefined aa raha hai kya?", structure);
 app.get("/*", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
