@@ -1,5 +1,3 @@
-/** @format */
-
 var socket = io();
 var messages = document.getElementById("messages");
 var form = document.getElementById("form");

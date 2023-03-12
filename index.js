@@ -1,16 +1,13 @@
-/** @format */
-
 const express = require("express");
 const mongoose = require("mongoose");
-const Msg = require("./message");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-mongoose.set("strictQuery", false);
-
+const uri =
+  "mongodb+srv://purkz:SpongebobIsGay621@cluster0.hsz14uv.mongodb.net/database?retryWrites=true&w=majority";
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -20,24 +17,30 @@ mongoose
     console.log(e);
   });
 
-let structure;
-app.use((req, res, next) => {
-  structure = req.url.split("?");
-  console.log("url-structure", structure);
-  next();
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("MongoDB connection successful");
 });
 
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
+});
+app.get("/*", (req, res) => {
+  res.sendFile(__dirname + "/content.html");
 });
 
 io.on("connection", (socket) => {
-  console.log("New Client Connected", socket.request.url);
-  Msg.find()
+  console.log("New Client Connected", socket.handshake.headers.referer);
+  const url = new URL(socket.handshake.headers.referer);
+  const collectionName = url.pathname.slice(1).replace("/", "_");
+  console.log("collection", collectionName);
+
+  db.collection(collectionName)
+    .find()
+    .toArray()
     .then((messages) => {
       messages.forEach((msg) => {
         socket.emit("chat message", msg.msg);
-        // console.log(msg.msg);
       });
     })
     .catch((error) => {
@@ -46,9 +49,9 @@ io.on("connection", (socket) => {
 
   // Handle new chat messages
   socket.on("chat message", (msg) => {
-    const message = new Msg({ msg });
-    message
-      .save()
+    const message = { msg };
+    db.collection(collectionName)
+      .insertOne(message)
       .then(() => {
         io.emit("chat message", msg);
       })
