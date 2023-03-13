@@ -29,6 +29,7 @@
                 flex-grow: 1;
                 border-radius: 2rem;
                 margin: 0.25rem;
+                white-space: pre-wrap;
             }
 
             #input:focus {
@@ -54,17 +55,14 @@
             #messages>li {
                 padding: 0.5rem 1rem;
             }
-
-            #messages>li:nth-child(odd) {
-                background: #efefef;
-            }
         </style>
     </head>
 
     <body>
         <ul id="messages"></ul>
         <form id="form" action="">
-            <input id="input" autocomplete="off" /><button>Send</button>
+            <textarea id="input" autocomplete="off" rows="10"></textarea>
+            <button>Send</button>
         </form>
         <script src="/socket.io/socket.io.js"></script>
         <script>
