@@ -23,13 +23,18 @@ const content = async (collectionName) => {
 export default async function Home({ params }) {
   const data = await content(params.slug.join("_"));
   return (
-    <>
-      {`${params.slug.join("_")}--->`}
-      <ul>
+    <div className="flex items-center justify-center">
+      <div className="flex flex-col items-start justify-start space-y-4 p-2">
         {data.map((msg) => {
-          return <li key={msg._id}>{msg.msg}</li>;
+          return (
+            <pre
+              key={msg._id}
+              className="border-l-4 border-black bg-gray-100 p-2">
+              {msg.msg}
+            </pre>
+          );
         })}
-      </ul>
-    </>
+      </div>
+    </div>
   );
 }
