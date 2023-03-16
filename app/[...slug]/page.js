@@ -11,6 +11,8 @@ const content = async (collectionName) => {
   // Create collection if it doesn't exist
   if (!collectionExists) {
     await db.createCollection(collectionName);
+
+    return [];
   }
 
   // Get content from collection
@@ -22,6 +24,7 @@ const content = async (collectionName) => {
 
 export default async function Home({ params }) {
   const data = await content(params.slug.join("_"));
+
   return (
     <div className="flex items-center justify-center">
       <div className="flex flex-col items-start justify-start space-y-4 p-2">
