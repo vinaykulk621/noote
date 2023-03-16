@@ -1,3 +1,4 @@
+// "use client";
 import { connect } from "../../db";
 
 const content = async (collectionName) => {
@@ -22,6 +23,13 @@ const content = async (collectionName) => {
   return content;
 };
 
+const deleteChits = async () => {
+  try {
+    const res = await fetch("/api/deleteChitts");
+  } catch (e) {
+    console.log(e);
+  }
+};
 export default async function Home({ params }) {
   const data = await content(params.slug.join("_"));
 
@@ -30,11 +38,18 @@ export default async function Home({ params }) {
       <div className="flex flex-col items-start justify-start space-y-4 p-2">
         {data.map((msg) => {
           return (
-            <pre
-              key={msg._id}
-              className="border-l-4 border-black bg-gray-100 p-2">
-              {msg.msg}
-            </pre>
+            <>
+              <pre
+                key={msg._id}
+                className="border-l-4 border-black bg-gray-100 p-2">
+                {msg.msg}
+              </pre>
+              <button
+                className="fixed top-5 right-2 m-1 rounded-lg bg-red-600 p-1 text-2xl"
+                onClick={deleteChits}>
+                delete-everything
+              </button>
+            </>
           );
         })}
       </div>
