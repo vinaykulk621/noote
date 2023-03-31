@@ -46,7 +46,8 @@ export default async function Home({ params }) {
               </pre>
               <button
                 className="fixed top-5 right-2 m-1 rounded-lg bg-red-600 p-1 text-2xl"
-                onClick={deleteChits}>
+                // onClick={deleteChits}
+              >
                 delete-everything
               </button>
             </>
