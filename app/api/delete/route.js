@@ -1,8 +1,9 @@
 import { connect } from "../../../db";
 
-export async function GET(request, { params }) {
-  console.log(request.url);
-  console.log(params);
+export async function POST(request) {
+  console.log(request);
+  const collectionName = request.body;
+  console.log(collectionName);
   const client = await connect();
   const db = client.db();
   // await db.collection(collectionName).deleteMany({});
