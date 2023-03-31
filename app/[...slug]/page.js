@@ -28,7 +28,7 @@ export default async function Home({ params }) {
   const data = await content(params.slug.join("_"));
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="xs:flex xs:items-center xs:justify-center xs:mb-16 mb-16 md:flex md:items-center md:justify-center">
       <div className="flex flex-col items-start justify-start space-y-4 p-2">
         {data.map((msg) => {
           return (
@@ -39,7 +39,7 @@ export default async function Home({ params }) {
                 {msg.msg}
               </pre>
               <Button
-                key={msg._id}
+                key={msg._id + 1}
                 collectionName={params.slug.join("_")}
               />
             </>
