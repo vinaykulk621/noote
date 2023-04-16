@@ -1,4 +1,4 @@
-import { connect } from "../../../db";
+import { connect } from "../../../../db";
 
 export async function GET(request) {
   const client = await connect();

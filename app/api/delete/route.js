@@ -6,7 +6,7 @@ export async function POST(request) {
   console.log(collectionName);
   const client = await connect();
   const db = client.db();
-  // await db.collection(collectionName).deleteMany({});
+  await db.collection(collectionName).deleteMany({});
   client.close();
   return new Response("Success");
 }
