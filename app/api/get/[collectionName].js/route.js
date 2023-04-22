@@ -1,10 +1,11 @@
 import { connect } from "../../../../db";
 
-export async function GET(request) {
+export async function GET(request, { parmas }) {
   const client = await connect();
   const db = client.db();
-  const { searchParams } = new URL(request.url);
-  const collectionName = searchParams.get("collectionName");
+  const collectionName = parmas;
+  // console.log(collectionName, "this is fick");
+  console.log(parmas, "this is definately fick");
 
   // Check if collection exists
   const collections = await db.listCollections().toArray();
