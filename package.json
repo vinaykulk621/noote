@@ -11,20 +11,20 @@
   "author": {
     "email": "kulkarnivinay621@gmail.com",
     "name": "Vinay-Kulkarni",
-    "url": "https://www.vinay621.live"
+    "url": "https://vinaykulka.vercel.app"
   },
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.21.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
-    "mongodb": "^5.1.0",
-    "mongoose": "^6.9.1",
-    "next": "^13.2.4",
+    "next": "^13.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
+    "encoding": "^0.1.13",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.4",
