@@ -1,6 +1,9 @@
 "use client";
 
-export function Insert({ params }) {
+import { supabase } from "../../supabase";
+
+export async function Insert(params) {
+  const table = params.params;
   return (
     <div className="fixed bottom-2 flex w-screen items-center space-x-2">
       <input
@@ -13,19 +16,20 @@ export function Insert({ params }) {
       <button
         className="rounded-lg bg-black p-2 text-center text-3xl text-white"
         onClick={async (e) => {
-          console.log(params, "Insert");
-          const content1 = e.target.content.value.trim();
+          const inputVal = document
+            .getElementsByName("content")[0]
+            .value.trim();
+          console.log(inputVal, "content hai bhai");
           try {
             const { data, error } = await supabase
-              .from(params)
-              .insert([{ content: content1 }]);
+              .from(table)
+              .insert([{ content: inputVal }]);
             window.location.reload();
-            console.log(data, "bhai im gay");
           } catch (e) {
             console.log(e);
           }
         }}
-        type="submit">
+        type="button">
         Add
       </button>
     </div>

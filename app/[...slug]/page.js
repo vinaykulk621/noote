@@ -7,15 +7,42 @@ export const revalidate = 0;
 
 const content = async (table) => {
   try {
-    let { data, error } = await supabase.from(table).select("*");
-    return data || [" "];
+    console.log(table);
+    const { data, error } = await supabase
+      .from("information_schema.tables")
+      .select("table_name")
+      .eq("table_name", table);
+
+    if (error) console.log("Error checking table:", error);
+    else if (data.length > 0) {
+      try {
+        let { data, error } = await supabase.from(table).select("*");
+        return data || [" "];
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const { data, error } = await supabase.from(table).create({
+          id: "uuid not null default uuid_generate_v4 () PRIMARY KEY",
+          created_at: "timestamp with time zone not null default now()",
+          content: "text not null default ''::text",
+        });
+        return [" "];
+      } catch (e) {
+        console.log(e);
+      }
+    }
   } catch (e) {
-    console.log(e);
+    console.log("Error checking table:", error);
   }
+
+  return [" "];
 };
 
 const Home = async ({ params }) => {
-  const data = await content(params.slug.join("_"));
+  const table = params.slug.join("_");
+  const data = await content(table);
 
   return (
     <>
@@ -29,13 +56,16 @@ const Home = async ({ params }) => {
                   className="border-l-4 border-black bg-gray-100 p-2">
                   {msg.content}
                 </pre>
-                <Buttom id={msg.id} />
+                <Buttom
+                  id={msg.id}
+                  key={msg.id}
+                />
               </>
             );
           })}
         </div>
       </div>
-      <Insert params={params.slug.join("_")} />
+      <Insert params={table} />
     </>
   );
 };

@@ -2,10 +2,10 @@
 
 import { supabase } from "../../supabase";
 
-const Button = async ({ id }) => {
+const Button = async ({ id,key }) => {
   return (
     <button
-      key={id}
+      key={key}
       onClick={async () => {
         try {
           const { data, error } = await supabase
