@@ -6,37 +6,45 @@ const Buttom = dynamic(() => import("./Button"), { ssr: false });
 export const revalidate = 0;
 
 const content = async (table) => {
+  console.log(table);
   try {
-    console.log(table);
-    const { data, error } = await supabase
-      .from("information_schema.tables")
-      .select("table_name")
-      .eq("table_name", table);
-
-    if (error) console.log("Error checking table:", error);
-    else if (data.length > 0) {
+    const { data, error } = await supabase.from("pages").select("pages");
+    const { data2, error2 } = await supabase.from("content").select("page");
+    const pages = [];
+    data.forEach((e) => {
+      pages.push(e.pages);
+    });
+    if (pages.includes(table)) {
       try {
-        let { data, error } = await supabase.from(table).select("*");
+        const { data, error } = await supabase
+        .from("content")
+        .select(`content,pages(page)`);
         return data || [" "];
       } catch (e) {
         console.log(e);
       }
-    } else {
+    }
+    if (!pages.includes(table)) {
       try {
-        const { data, error } = await supabase.from(table).create({
-          id: "uuid not null default uuid_generate_v4 () PRIMARY KEY",
-          created_at: "timestamp with time zone not null default now()",
-          content: "text not null default ''::text",
-        });
-        return [" "];
+        const { data, error } = await supabase
+        .from("pages")
+        .insert([{ pages: table }]);
+        const { data2, error2 } = await supabase.from("content").select("page");
+        if (!data2) {
+          const { data2, error2 } = await supabase
+            .from("content")
+            .insert([{ page: table }]);
+        }
       } catch (e) {
         console.log(e);
       }
     }
+    if (error) {
+      return [" "];
+    }
   } catch (e) {
-    console.log("Error checking table:", error);
+    console.log(e);
   }
-
   return [" "];
 };
 
