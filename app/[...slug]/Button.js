@@ -2,14 +2,15 @@
 
 import { supabase } from "../../supabase";
 
-const Button = async ({ id,key }) => {
+const Button = async ({ id, params }) => {
+  const table = params;
+  console.log(id, params);
   return (
     <button
-      key={key}
       onClick={async () => {
         try {
           const { data, error } = await supabase
-            .from("g")
+            .from("pages")
             .delete()
             .eq("id", id);
           window.location.reload();
@@ -17,7 +18,7 @@ const Button = async ({ id,key }) => {
           console.log(e);
         }
       }}
-      className="right-2 top-5 m-1 rounded-lg bg-red-600 p-1 text-2xl">
+      className="right-2 top-5 m-1 rounded-lg bg-red-600 p-1 text-xl">
       Delete
     </button>
   );

@@ -4,6 +4,7 @@ import { supabase } from "../../supabase";
 
 export async function Insert(params) {
   const table = params.params;
+
   return (
     <div className="fixed bottom-2 flex w-screen items-center space-x-2">
       <input
@@ -22,8 +23,8 @@ export async function Insert(params) {
           console.log(inputVal, "content hai bhai");
           try {
             const { data, error } = await supabase
-              .from(table)
-              .insert([{ content: inputVal }]);
+              .from("pages")
+              .insert([{ pages: table, content: inputVal }]);
             window.location.reload();
           } catch (e) {
             console.log(e);

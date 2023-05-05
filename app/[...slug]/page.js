@@ -9,7 +9,6 @@ const content = async (table) => {
   console.log(table);
   try {
     const { data, error } = await supabase.from("pages").select("pages");
-    const { data2, error2 } = await supabase.from("content").select("page");
     const pages = [];
     data.forEach((e) => {
       pages.push(e.pages);
@@ -17,8 +16,10 @@ const content = async (table) => {
     if (pages.includes(table)) {
       try {
         const { data, error } = await supabase
-        .from("content")
-        .select(`content,pages(page)`);
+          .from("pages")
+          .select()
+          .eq("pages", table);
+        console.log("content", data);
         return data || [" "];
       } catch (e) {
         console.log(e);
@@ -27,14 +28,9 @@ const content = async (table) => {
     if (!pages.includes(table)) {
       try {
         const { data, error } = await supabase
-        .from("pages")
-        .insert([{ pages: table }]);
-        const { data2, error2 } = await supabase.from("content").select("page");
-        if (!data2) {
-          const { data2, error2 } = await supabase
-            .from("content")
-            .insert([{ page: table }]);
-        }
+          .from("pages")
+          .insert([{ pages: table, content: "noote" }]);
+        return [" "];
       } catch (e) {
         console.log(e);
       }
@@ -45,7 +41,6 @@ const content = async (table) => {
   } catch (e) {
     console.log(e);
   }
-  return [" "];
 };
 
 const Home = async ({ params }) => {
@@ -59,15 +54,18 @@ const Home = async ({ params }) => {
           {data.map((msg) => {
             return (
               <>
-                <pre
-                  key={msg.id}
-                  className="border-l-4 border-black bg-gray-100 p-2">
-                  {msg.content}
-                </pre>
-                <Buttom
-                  id={msg.id}
-                  key={msg.id}
-                />
+                <div className="flex flex-row">
+                  <Buttom
+                    id={msg.id}
+                    key={msg.id}
+                    params={table}
+                  />
+                  <pre
+                    key={msg.id}
+                    className="border-l-4 border-black bg-gray-100 p-2">
+                    {msg.content}
+                  </pre>
+                </div>
               </>
             );
           })}
