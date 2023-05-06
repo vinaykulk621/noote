@@ -2,24 +2,21 @@
 
 import { supabase } from "../../supabase";
 
-const Button = async ({ id, params }) => {
-  const table = params;
-  console.log(id, params);
+const Button = async ({ id }) => {
+  const handle = async () => {
+    try {
+      await supabase.from("pages").delete().eq("id", id);
+      window.location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <button
-      onClick={async () => {
-        try {
-          const { data, error } = await supabase
-            .from("pages")
-            .delete()
-            .eq("id", id);
-          window.location.reload();
-        } catch (e) {
-          console.log(e);
-        }
-      }}
-      className="right-2 top-5 m-1 rounded-lg bg-red-600 p-1 text-xl">
-      Delete
+      onClick={handle}
+      className="right-2 top-5 m-1 flex-grow-0 rounded-sm bg-zinc-500 px-1 py-0 text-xl text-white">
+      X
     </button>
   );
 };

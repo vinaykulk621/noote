@@ -1,47 +1,8 @@
 import dynamic from "next/dynamic";
-import { supabase } from "../../supabase";
 import { Insert } from "./Insert";
-
-const Buttom = dynamic(() => import("./Button"), { ssr: false });
+import content from "./content";
 export const revalidate = 0;
-
-const content = async (table) => {
-  console.log(table);
-  try {
-    const { data, error } = await supabase.from("pages").select("pages");
-    const pages = [];
-    data.forEach((e) => {
-      pages.push(e.pages);
-    });
-    if (pages.includes(table)) {
-      try {
-        const { data, error } = await supabase
-          .from("pages")
-          .select()
-          .eq("pages", table);
-        console.log("content", data);
-        return data || [" "];
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    if (!pages.includes(table)) {
-      try {
-        const { data, error } = await supabase
-          .from("pages")
-          .insert([{ pages: table, content: "noote" }]);
-        return [" "];
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    if (error) {
-      return [" "];
-    }
-  } catch (e) {
-    console.log(e);
-  }
-};
+const Buttom = dynamic(() => import("./Button"), { ssr: false });
 
 const Home = async ({ params }) => {
   const table = params.slug.join("_");
@@ -58,7 +19,6 @@ const Home = async ({ params }) => {
                   <Buttom
                     id={msg.id}
                     key={msg.id}
-                    params={table}
                   />
                   <pre
                     key={msg.id}
