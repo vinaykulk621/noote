@@ -1,11 +1,13 @@
 "use client";
 
+// import { revalidatePath } from "next/cache";
 import { supabase } from "../../supabase";
 
 const Button = async ({ id }) => {
   const handle = async () => {
     try {
       await supabase.from("pages").delete().eq("id", id);
+      // revalidatePath()
       window.location.reload();
     } catch (e) {
       console.log(e);

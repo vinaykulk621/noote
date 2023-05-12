@@ -1,5 +1,6 @@
 "use client";
 
+// import { revalidatePath } from "next/cache";
 import { supabase } from "../../supabase";
 
 export async function Insert(params) {
@@ -15,6 +16,7 @@ export async function Insert(params) {
       await supabase
         .from("pages")
         .insert([{ pages: table, content: e.target.content.value.trim() }]);
+      // revalidatePath();
       window.location.reload();
     } catch (e) {
       console.log(e);

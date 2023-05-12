@@ -19,7 +19,7 @@ const content = async (table) => {
           .select()
           .eq("pages", table);
 
-        return data || [" "];
+        return data || ["noote"];
       } catch (e) {
         console.log(e);
       }
@@ -31,7 +31,7 @@ const content = async (table) => {
           .from("pages")
           .insert([{ pages: table, content: "noote" }]);
 
-        return [" "];
+        return ["notte"];
       } catch (e) {
         console.log(e);
       }
