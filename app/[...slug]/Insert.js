@@ -1,9 +1,11 @@
 "use client";
 
-// import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import { supabase } from "../../supabase";
 
 export async function Insert(params) {
+
+  const router = useRouter();
   let table;
   if (params !== undefined) {
     table = params.params;
@@ -16,8 +18,7 @@ export async function Insert(params) {
       await supabase
         .from("pages")
         .insert([{ pages: table, content: e.target.content.value.trim() }]);
-      // revalidatePath();
-      window.location.reload();
+      router.refresh();
     } catch (e) {
       console.log(e);
     }

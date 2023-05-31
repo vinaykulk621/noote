@@ -1,14 +1,14 @@
 "use client";
 
-// import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import { supabase } from "../../supabase";
 
 const Button = async ({ id }) => {
+  const router = useRouter();
   const handle = async () => {
     try {
       await supabase.from("pages").delete().eq("id", id);
-      // revalidatePath()
-      window.location.reload();
+      router.refresh();
     } catch (e) {
       console.log(e);
     }
