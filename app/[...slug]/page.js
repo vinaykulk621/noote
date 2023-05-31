@@ -1,5 +1,5 @@
-import { Insert } from "./Insert";
 import dynamic from "next/dynamic";
+import { Insert } from "./Insert";
 import content from "./content";
 export const revalidate = 0;
 const Buttom = dynamic(() => import("./Button"), { ssr: false });
