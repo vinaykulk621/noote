@@ -1,44 +1,24 @@
 import { supabase } from "../../supabase";
 
-const content = async (table) => {
-  const pages = [];
+export default async function content(table) {
   try {
-    const { data, error } = await supabase.from("pages").select("pages");
-    if (error) {
-      return [" "];
+    const { data, error } = await supabase
+      .from("pages")
+      .select()
+      .eq("pages", table);
+    if (data) {
+      return data || ["noote"];
     }
+    try {
+      const { data, error } = await supabase
+        .from("pages")
+        .insert([{ pages: table, content: "noote" }]);
 
-    data.forEach((e) => {
-      pages.push(e.pages);
-    });
-
-    if (pages.includes(table)) {
-      try {
-        const { data, error } = await supabase
-          .from("pages")
-          .select()
-          .eq("pages", table);
-
-        return data || ["noote"];
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    if (!pages.includes(table)) {
-      try {
-        const { data, error } = await supabase
-          .from("pages")
-          .insert([{ pages: table, content: "noote" }]);
-
-        return ["notte"];
-      } catch (e) {
-        console.log(e);
-      }
+      return ["notte"];
+    } catch (e) {
+      console.log(e);
     }
   } catch (e) {
     console.log(e);
   }
-};
-
-export default content;
+}

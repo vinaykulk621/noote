@@ -1,7 +1,18 @@
 import { revalidatePath } from "next/cache";
 import { supabase } from "../../supabase";
-import { Suspense } from "react";
 import content from "./content";
+import { Suspense } from "react";
+import Loading from "./loading";
+
+export async function generateMetadata({ params }) {
+  return {
+    title: `noote | ${params.slug.join("_")}`,
+    description:
+      "For Cheating during lab exams and sharing stuff online easily. DUH!!",
+    keywords: "dontpad.com,note,notes_app,online_text_share,easy_share",
+    author: "Vinay Kulkarni",
+  };
+}
 
 export default async function Home({ params }) {
   const table = params.slug.join("_");
@@ -35,10 +46,10 @@ export default async function Home({ params }) {
     <>
       <div className="xs:flex xs:items-center xs:justify-center xs:mb-16 mb-16 md:flex md:items-center md:justify-center">
         <div className="flex flex-col items-start justify-start space-y-4 p-2">
-          {data.map((msg) => {
-            return (
-              <>
-                {/* <Suspense fallback={<Loading />}> */}
+          <Suspense fallback={<Loading />}>
+            {data.map((msg) => {
+              return (
+                <>
                   <div className="flex flex-row">
                     <form action={handle}>
                       <button
@@ -57,10 +68,10 @@ export default async function Home({ params }) {
                       {msg.content}
                     </pre>
                   </div>
-                {/* </Suspense> */}
-              </>
-            );
-          })}
+                </>
+              );
+            })}
+          </Suspense>
         </div>
       </div>
       <form
