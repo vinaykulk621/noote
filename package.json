@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format:write": "prettier --write \"**/*.{js,tsx,mdx,md}\" --cache",
+    "format:check": "prettier --check \"**/*.{js,tsx,mdx,md}\" --cache"
   },
   "author": {
     "email": "kulkarnivinay621@gmail.com",

@@ -1,44 +1,44 @@
-import { revalidatePath } from "next/cache";
-import { supabase } from "../../supabase";
-import content from "./content";
-import { Suspense } from "react";
-import Loading from "./loading";
+import { revalidatePath } from 'next/cache'
+import { supabase } from '../../supabase'
+import content from './content'
+import { Suspense } from 'react'
+import Loading from './loading'
 
 export async function generateMetadata({ params }) {
   return {
-    title: `noote | ${params.slug.join("_")}`,
+    title: `noote | ${params.slug.join('_')}`,
     description:
-      "For Cheating during lab exams and sharing stuff online easily. DUH!!",
-    keywords: "dontpad.com,note,notes_app,online_text_share,easy_share",
-    author: "Vinay Kulkarni",
-  };
+      'For Cheating during lab exams and sharing stuff online easily. DUH!!',
+    keywords: 'dontpad.com,note,notes_app,online_text_share,easy_share',
+    author: 'Vinay Kulkarni',
+  }
 }
 
 export default async function Home({ params }) {
-  const table = params.slug.join("_");
-  const data = await content(table);
+  const table = params.slug.join('_')
+  const data = await content(table)
 
   async function handle(params) {
-    "use server";
+    'use server'
 
     try {
-      await supabase.from("pages").delete().eq("id", params.get("id"));
-      revalidatePath("/[...slug]");
+      await supabase.from('pages').delete().eq('id', params.get('id'))
+      revalidatePath('/[...slug]')
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
   async function submitDataToDatabase(formData) {
-    "use server";
+    'use server'
 
     try {
       await supabase
-        .from("pages")
-        .insert([{ pages: table, content: formData.get("content").trim() }]);
-      revalidatePath("/[...slug]");
+        .from('pages')
+        .insert([{ pages: table, content: formData.get('content').trim() }])
+      revalidatePath('/[...slug]')
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
@@ -58,25 +58,28 @@ export default async function Home({ params }) {
                         type="submit"
                         name="id"
                         value={msg.id}
-                        className="right-2 top-5 m-1 flex-grow-0 rounded-sm bg-zinc-500 px-1 py-0 text-xl text-white">
+                        className="right-2 top-5 m-1 flex-grow-0 rounded-sm bg-zinc-500 px-1 py-0 text-xl text-white"
+                      >
                         X
                       </button>
                     </form>
                     <pre
                       key={msg.id}
-                      className="border-l-4 border-black bg-gray-100 p-2">
+                      className="border-l-4 border-black bg-gray-100 p-2"
+                    >
                       {msg.content}
                     </pre>
                   </div>
                 </>
-              );
+              )
             })}
           </Suspense>
         </div>
       </div>
       <form
         className="fixed bottom-2 flex w-screen items-center justify-around bg-white"
-        action={submitDataToDatabase}>
+        action={submitDataToDatabase}
+      >
         <textarea
           className="ml-2 flex-grow border-2 border-black p-2 placeholder:text-2xl"
           placeholder="Enter your note"
@@ -85,10 +88,11 @@ export default async function Home({ params }) {
         />
         <button
           className="m-2 rounded-lg bg-black p-2 text-center text-2xl text-white"
-          type="submit">
+          type="submit"
+        >
           &#8594;
         </button>
       </form>
     </>
-  );
+  )
 }
