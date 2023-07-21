@@ -1,12 +1,35 @@
-import dynamic from "next/dynamic";
-import { Insert } from "./Insert";
+import { revalidatePath } from "next/cache";
+import { supabase } from "../../supabase";
+import { Suspense } from "react";
 import content from "./content";
-export const revalidate = 0;
-const Buttom = dynamic(() => import("./Button"), { ssr: false });
 
-const Home = async ({ params }) => {
+export default async function Home({ params }) {
   const table = params.slug.join("_");
   const data = await content(table);
+
+  async function handle(params) {
+    "use server";
+
+    try {
+      await supabase.from("pages").delete().eq("id", params.get("id"));
+      revalidatePath("/[...slug]");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function submitDataToDatabase(formData) {
+    "use server";
+
+    try {
+      await supabase
+        .from("pages")
+        .insert([{ pages: table, content: formData.get("content").trim() }]);
+      revalidatePath("/[...slug]");
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -15,25 +38,46 @@ const Home = async ({ params }) => {
           {data.map((msg) => {
             return (
               <>
-                <div className="flex flex-row">
-                  <Buttom
-                    id={msg.id}
-                    key={msg.id}
-                  />
-                  <pre
-                    key={msg.id}
-                    className="border-l-4 border-black bg-gray-100 p-2">
-                    {msg.content}
-                  </pre>
-                </div>
+                {/* <Suspense fallback={<Loading />}> */}
+                  <div className="flex flex-row">
+                    <form action={handle}>
+                      <button
+                        id={msg.id}
+                        key={msg.id}
+                        type="submit"
+                        name="id"
+                        value={msg.id}
+                        className="right-2 top-5 m-1 flex-grow-0 rounded-sm bg-zinc-500 px-1 py-0 text-xl text-white">
+                        X
+                      </button>
+                    </form>
+                    <pre
+                      key={msg.id}
+                      className="border-l-4 border-black bg-gray-100 p-2">
+                      {msg.content}
+                    </pre>
+                  </div>
+                {/* </Suspense> */}
               </>
             );
           })}
         </div>
       </div>
-      <Insert params={table} />
+      <form
+        className="fixed bottom-2 flex w-screen items-center justify-around bg-white"
+        action={submitDataToDatabase}>
+        <textarea
+          className="ml-2 flex-grow border-2 border-black p-2 placeholder:text-2xl"
+          placeholder="Enter your note"
+          name="content"
+          required
+        />
+        <button
+          className="m-2 rounded-lg bg-black p-2 text-center text-2xl text-white"
+          type="submit">
+          &#8594;
+        </button>
+      </form>
     </>
   );
-};
-
-export default Home;
+}

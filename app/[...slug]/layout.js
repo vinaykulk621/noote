@@ -7,6 +7,8 @@ export async function generateMetadata({ params }) {
     author: "Vinay Kulkarni",
   };
 }
+
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
