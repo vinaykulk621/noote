@@ -3,6 +3,7 @@ import { supabase } from '../../supabase'
 import content from './content'
 import { Suspense } from 'react'
 import Loading from './loading'
+import { Textarea } from '../../components/ui/textArea'
 
 export async function generateMetadata({ params }) {
   return {
@@ -50,7 +51,7 @@ export default async function Home({ params }) {
             {data.map((msg) => {
               return (
                 <>
-                  <div className="flex flex-row">
+                  <div className="flex flex-row" key={msg.id}>
                     <form action={handle}>
                       <button
                         id={msg.id}
@@ -80,12 +81,13 @@ export default async function Home({ params }) {
         className="fixed bottom-2 flex w-screen items-center justify-around bg-white"
         action={submitDataToDatabase}
       >
-        <textarea
+        <Textarea
           className="ml-2 flex-grow border-2 border-black p-2 placeholder:text-2xl"
           placeholder="Enter your note"
           name="content"
           required
         />
+
         <button
           className="m-2 rounded-lg bg-black p-2 text-center text-2xl text-white"
           type="submit"
