@@ -1,15 +1,8 @@
 import { supabase } from '../../supabase'
-type data = {
-  id: string
-  content: string
-}
 
-export default async function content(table: string): data[] {
+export default async function content(table: string) {
   try {
-    const { data, error } = await supabase
-      .from('pages')
-      .select()
-      .eq('pages', table)
+    const { data, error } = await supabase.from('pages').select().eq('pages', table)
     console.log(data);
     if (data) {
       return data || ['noote']
