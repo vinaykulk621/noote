@@ -1,4 +1,4 @@
-import { GithubSVG } from '../lib/utils'
+import { GithubSVG } from "@/components/GitHub";
 
 export default function Home() {
   return (
