@@ -1,22 +1,29 @@
 import { supabase } from '../../supabase'
 
-export default async function content(table: string) {
+type dataFormat = {
+  content: string;
+  created_at?: string;
+  id?: string;
+  pages?: string;
+}[]
+
+export default async function content(table: string): Promise<dataFormat> {
   try {
     const { data, error } = await supabase.from('pages').select().eq('pages', table)
-    console.log(data);
     if (data) {
-      return data || ['noote']
+      return data || [{ content: 'noote' }]
     }
     try {
       const { data, error } = await supabase
         .from('pages')
         .insert([{ pages: table, content: 'noote' }])
 
-      return ['notte']
+      return [{ content: 'noote' }]
     } catch (e) {
       console.log(e)
     }
   } catch (e) {
     console.log(e)
   }
+  return [{ content: 'notte' }]
 }
