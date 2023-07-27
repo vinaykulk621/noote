@@ -1,15 +1,18 @@
 import { supabase } from '../../supabase'
 
 type dataFormat = {
-  content: string;
-  created_at?: string;
-  id?: string;
-  pages?: string;
+  content: string
+  created_at?: string
+  id?: string
+  pages?: string
 }[]
 
 export default async function content(table: string): Promise<dataFormat> {
   try {
-    const { data, error } = await supabase.from('pages').select().eq('pages', table)
+    const { data, error } = await supabase
+      .from('pages')
+      .select()
+      .eq('pages', table)
     if (data) {
       return data || [{ content: 'noote' }]
     }

@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format:write": "prettier --write \"**/*.{ts,js,tsx,mdx,md}\" --cache",
-    "format:check": "prettier --check \"**/*.{ts,js,tsx,mdx,md}\" --cache",
+    "format:write": "prettier --write \"**/*.{ts,js,tsx,mdx,md,json}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,js,tsx,mdx,md,json}\" --cache",
     "gen-types": "npx supabase gen types typescript --project-id lxpvudvqfvttinrfcjmq > types/supabase.ts"
   },
   "author": {

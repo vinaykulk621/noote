@@ -5,7 +5,11 @@ import { Suspense } from 'react'
 import Loading from './loading'
 import { Textarea } from '@/components/ui/textarea'
 
-export async function generateMetadata({ params }: { params: { slug: Array<string> } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: Array<string> }
+}) {
   return {
     title: `noote | ${params.slug.join('_')}`,
     description:
@@ -15,7 +19,11 @@ export async function generateMetadata({ params }: { params: { slug: Array<strin
   }
 }
 
-export default async function Home({ params }: { params: { slug: Array<string> } }) {
+export default async function Home({
+  params,
+}: {
+  params: { slug: Array<string> }
+}) {
   const table = params.slug.join('_')
   const data = await content(table)
 
@@ -46,7 +54,7 @@ export default async function Home({ params }: { params: { slug: Array<string> }
   return (
     <>
       <div className="xs:flex xs:items-center xs:justify-center xs:mb-16 mb-16 md:flex md:items-center md:justify-center">
-        <div className="flex flex-col items-start justify-start space-y-4 p-2 max-w-2xl">
+        <div className="flex max-w-2xl flex-col items-start justify-start space-y-4 p-2">
           <Suspense fallback={<Loading />}>
             {data?.map((msg) => {
               return (
@@ -62,9 +70,7 @@ export default async function Home({ params }: { params: { slug: Array<string> }
                         X
                       </button>
                     </form>
-                    <pre
-                      className="border-l-4 border-black bg-gray-100 p-2"
-                    >
+                    <pre className="border-l-4 border-black bg-gray-100 p-2">
                       {msg?.content}
                     </pre>
                   </div>
