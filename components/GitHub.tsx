@@ -1,4 +1,4 @@
-export function GithubSVG({}) {
+export function GithubSVG() {
   return (
     <a
       className="fixed bottom-2 right-2 text-sm text-white transition hover:text-gray-600"
