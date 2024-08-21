@@ -45,23 +45,21 @@ export default async function Home({
           <Suspense fallback={<Loading />}>
             {data?.map((msg) => {
               return (
-                <>
-                  <div className="flex flex-row" key={msg?.id}>
-                    <form action={handle}>
-                      <button
-                        type="submit"
-                        name="id"
-                        value={msg?.id}
-                        className="right-2 top-5 m-1 flex-grow-0 rounded-sm bg-zinc-500 px-1 py-0 text-xl text-white"
-                      >
-                        X
-                      </button>
-                    </form>
-                    <pre className="border-l-4 border-black bg-gray-100 p-2">
-                      {msg?.content}
-                    </pre>
-                  </div>
-                </>
+                <div className="flex flex-row" key={msg?.id}>
+                  <form action={handle}>
+                    <button
+                      type="submit"
+                      name="id"
+                      value={msg?.id}
+                      className="right-2 top-5 m-1 flex-grow-0 rounded-sm bg-zinc-700 px-1 py-0 text-xl text-white"
+                    >
+                      X
+                    </button>
+                  </form>
+                  <pre className="max-w-screen-sm overflow-auto whitespace-pre-wrap break-words border-l-4 border-black bg-zinc-900 p-2 lg:max-w-screen-lg xl:max-w-screen-xl">
+                    {msg?.content}
+                  </pre>
+                </div>
               )
             })}
           </Suspense>

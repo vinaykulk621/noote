@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="scrollbar scrollbar-thumb">
+      <body className="scrollbar scrollbar-thumb bg-black text-white">
         {children}
         <Analytics />
       </body>
