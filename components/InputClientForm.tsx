@@ -28,7 +28,7 @@ export default function InputClientForm({
         id="content"
         name="content"
         autoFocus
-        className="max-h-52 w-2/3 overflow-y-auto rounded-md border border-black p-2"
+        className="max-h-52 w-2/3 overflow-y-auto rounded-md border border-black bg-transparent/60 p-2 text-white"
         role="textbox"
         onKeyDown={handleKeyDown}
       />
